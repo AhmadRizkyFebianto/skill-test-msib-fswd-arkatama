@@ -10,28 +10,55 @@ class DataDiriController extends Controller
     public function store(Request $request)
     {
 
-        $inputData = $request->input('data');
-
-        list($name, $age, $city) = explode(' ', $inputData, 3);
-
-
-        $name = strtoupper($name);
-
-        $city = strtoupper($city);
-
-        $dataDiri = DataDiris::create([
-            'name' => $name,
-            'age' => $age,
-            'city' => $city,
+        $validatedData = $request->validate([
+            'input1' => 'required',
         ]);
 
-        $outputData = [
-            'nama' => $name,
-            'usia' => $age,
-            'kota' => $city,
+        $data = strtoupper($validatedData['input1']);
+
+        $data = explode(' ', $data);
+        $result = [];
+        $temporaryData = [];
+
+        foreach ($data as $item) {
+            $ignorePatterns = ["TAHUN", "THN", "TH"];
+            $ignoreItem = false;
+
+            foreach ($ignorePatterns as $pattern) {
+                if (stripos($item, $pattern) !== false) {
+                    $ignoreItem = true;
+                    break;
+                }
+            }
+
+            if ($ignoreItem) {
+                continue;
+            }
+
+            if (is_numeric($item)) {
+                if (!empty($temporaryData)) {
+                    $result[] = implode(" ", $temporaryData);
+                    $temporaryData = [];
+                }
+                $result[] = $item;
+            } else {
+                $temporaryData[] = $item;
+            }
+        }
+
+        if (!empty($temporaryData)) {
+            $result[] = implode(" ", $temporaryData);
+        }
+
+        $validatedData = [
+            'name' => $result[0],
+            'age' => $result[1],
+            'city' => $result[2]
         ];
 
-        return response()->json(['input_data' => $inputData, 'output_data' => $outputData]);
+        DataDiris::create($validatedData);
+
+        return redirect('input-data')->with('success', 'Data Add Successfully');
     }
 
 }

@@ -11,16 +11,11 @@
     <form action="{{ url('/store-data') }}" method="post">
         @csrf
         <label for="data">Input Data (Format: NAMA USIA KOTA): </label>
-        <input type="text" name="data" required>
+        <input
+                type="text" id="input1" name="input1"
+               >
         <button type="submit">Submit</button>
     </form>
 
-    @if(isset($inputData) && isset($outputData))
-        <h2>Hasil:</h2>
-        <p>Input Data: {{ $inputData }}</p>
-        <p>Nama: {{ $outputData['nama'] }}</p>
-        <p>Usia: {{ $outputData['usia'] }}</p>
-        <p>Kota: {{ $outputData['kota'] }}</p>
-    @endif
 </body>
 </html>
