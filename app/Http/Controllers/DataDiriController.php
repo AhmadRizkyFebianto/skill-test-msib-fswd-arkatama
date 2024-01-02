@@ -10,11 +10,12 @@ class DataDiriController extends Controller
     public function store(Request $request)
     {
 
+
         $validatedData = $request->validate([
-            'input1' => 'required',
+            'inputDataDiri' => 'required',
         ]);
 
-        $data = strtoupper($validatedData['input1']);
+        $data = strtoupper($validatedData['inputDataDiri']);
 
         $data = explode(' ', $data);
         $result = [];
@@ -58,7 +59,7 @@ class DataDiriController extends Controller
 
         DataDiris::create($validatedData);
 
-        return redirect('input-data')->with('success', 'Data Add Successfully');
+        return redirect('input-data');
     }
 
 }

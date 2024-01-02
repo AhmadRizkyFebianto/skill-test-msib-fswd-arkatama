@@ -12,8 +12,8 @@
         @csrf
         <label for="data">Input Data (Format: NAMA USIA KOTA): </label>
         <input
-                type="text" id="input1" name="input1"
-               >
+                type="text" id="inputDataDiri" name="inputDataDiri"
+                >
         <button type="submit">Submit</button>
     </form>
 
